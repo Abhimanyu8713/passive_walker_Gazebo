@@ -1,0 +1,15 @@
+<launch>
+  <!-- start gazebo with an empty plane -->
+  <arg name="x" default="0.0"/>
+  <arg name="y" default="0.0"/>
+  <arg name="z" default="0"/>
+  <arg name="roll" default="0"/>
+  <arg name="pitch" default="0.0"/>
+  <arg name="yaw" default="0"/>
+  <param name="/use_sim_time" value="true" />
+  <include file="$(find gazebo_ros)/launch/empty_world.launch" >
+  <arg name="world_name" value="$(find bounce_ball)/world/ramp_walker.world
+  		-x $(arg x) -y $(arg y) -z $(arg z)
+      	-R $(arg roll) -P $(arg pitch) -Y $(arg yaw)"/>
+  </include>
+</launch>

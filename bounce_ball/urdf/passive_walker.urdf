@@ -1,0 +1,190 @@
+<?xml version="1.0"?>
+<robot
+  name="passive_walker">
+
+   <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <robotNamespace>/passive_walker</robotNamespace>
+   </plugin>
+  </gazebo>
+<link name="world"/>
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0 0 1"
+        rpy="0 0 0" />
+      <mass
+        value="10" />
+      <inertia
+        ixx="0.001"
+        ixy="-1.1845E-10"
+        ixz="-5.498E-09"
+        iyy="0.001"
+        iyz="7.656E-11"
+        izz="0.001" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 1"
+        rpy="0 0 0" />
+      <geometry>
+       <sphere radius="0.05"/>
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 1"
+        rpy="0 0 0" />
+      <geometry>
+       <sphere radius="0.05"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="fixIt" type="fixed">
+  <parent link="world"/>
+  <child link="base_link"/>
+  </joint> 
+  <link
+    name="leg1">
+    <inertial>
+      <origin
+        xyz="0 0 -0.5"
+        rpy="0 0 0" />
+      <mass
+        value="5" />
+      <inertia
+        ixx="1.66E-2"
+        ixy="-1.1845E-10"
+        ixz="-5.498E-09"
+        iyy="1.66E-2"
+        iyz="7.656E-11"
+        izz="1.66E-2" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 -0.5"
+        rpy="0 0 0" />
+      <geometry>
+       <box size="0.01 0.01 1"/>
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 -0.5"
+        rpy="0 0 0" />
+      <geometry>
+       <box size="0.01 0.01 1"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="leg1_joint"
+    type="revolute">
+    <origin
+      xyz="0 0.05 1"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="leg1" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1000"
+      velocity="0" />
+  </joint>
+
+  <link
+    name="leg2">
+    <inertial>
+      <origin
+        xyz="0 0 -0.5"
+        rpy="0 0 0" />
+      <mass
+        value="5" />
+      <inertia
+        ixx="1.66E-2"
+        ixy="-1.1845E-10"
+        ixz="-5.498E-09"
+        iyy="1.66E-2"
+        iyz="7.656E-11"
+        izz="1.66E-2" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 -0.5"
+        rpy="0 0 0" />
+      <geometry>
+       <box size="0.01 0.01 1"/>
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 -0.5"
+        rpy="0 0 0" />
+      <geometry>
+       <box size="0.01 0.01 1"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="leg2_joint"
+    type="revolute">
+    <origin
+      xyz="0 -0.05 1"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="leg2" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1000"
+      velocity="0" />
+  </joint>
+
+  <transmission name="leg1_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="leg1_joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="leg1_jointMotor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+</transmission>
+
+ <transmission name="leg2_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="leg2_joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="leg12_jointMotor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+</transmission>
+
+</robot>

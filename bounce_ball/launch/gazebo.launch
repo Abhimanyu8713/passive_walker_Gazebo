@@ -1,0 +1,37 @@
+<launch>
+<!-- Load the TortoiseBot URDF model into the parameter server -->
+
+ <arg name="x" default="0.0"/>
+  <arg name="y" default="-0.9"/>
+  <arg name="z" default="1"/>
+  <arg name="roll" default="0"/>
+  <arg name="pitch" default="-0.05"/>
+  <arg name="yaw" default="1.57"/>
+
+<param name="robot_description" textfile="$(find bounce_ball)/urdf/passive_walker.urdf" />
+
+<rosparam file="$(find bounce_ball)/config/gains.yaml" command="load" />
+
+<!-- Start Gazebo with an empty world -->
+<!--include file="$(find gazebo_ros)/launch/empty_world.launch"/-->
+<include file="$(find bounce_ball)/launch/ramp_walker.launch"/>
+<!-- Spawn a TortoiseBot in Gazebo, taking the description from the
+parameter server -->
+
+<node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+      args="-param robot_description -urdf -model passive_walker
+      -x $(arg x) -y $(arg y) -z $(arg z)
+      -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)"/>
+
+<node name="robot_state_publisher" pkg="robot_state_publisher"
+        type="robot_state_publisher"/>
+
+<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+        output="screen" args="--namespace=/passive_walker
+                              joint_state_controller
+                              joint1_effort_controller
+                              joint2_effort_controller
+                              --shutdown-timeout 3">
+
+</node>
+</launch>
